@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1 id="demo">Hi</h1>
+
+<script>
+  function EightQueens(strArr) { 
+    var attackerQueen = [];
+    function getXandY(elem) {
+      return [elem[1], elem[3]];
+    }
+    
+    strArr.forEach( (queenPosition, index) => {
+      let [xPosition, yPosition] = getXandY(queenPosition);
+  
+      // find horizontal and vertical straight paths
+      for (var i=1;i<=strArr.length; i++) {
+        let strElemForY = `(${xPosition},${i})`;
+        let strElemForX = `(${i},${yPosition})`;
+        let pos = strArr.findIndex(elem => (elem == strElemForY || elem == strElemForX));
+        if (pos!=-1 && pos!=index) {
+          let minIndex = Math.min.apply(null, [pos, index]);
+          attackerQueen.push(minIndex);
+        }
+      }
+  
+      let max = Math.max.apply(null, getXandY(queenPosition));
+      let min = (max == xPosition) ? yPosition : xPosition;
+      let xVal = xPosition;
+      let yVal = yPosition;
+      
+      while(min > 0) {
+        let strElem = `(${xVal},${yVal})`;
+        let pos = strArr.findIndex(elem => elem == strElem);
+        if (pos!=-1 && pos!=index) {
+          let minIndex = Math.min.apply(null, [pos, index])
+          attackerQueen.push(minIndex);
+        }
+        xVal--;
+        yVal--;
+        min--;
+      }
+      xVal = xPosition;
+      yVal = yPosition;
+      while(max < 9) {
+        let strElemRightDiagonal = `(${xVal},${yVal})`;
+        let pos = strArr.findIndex(elem => elem == strElemRightDiagonal);
+        if (pos!=-1 && pos!=index) {
+          let minIndex = Math.min.apply(null, [pos, index])
+          attackerQueen.push(minIndex);
+        }
+        xVal++;
+        yVal++;
+        max++;
+      }
+      let xcount = xVal = xPosition;
+      let ycount = yVal = yPosition;
+      if (xPosition < yPosition) {
+        
+        //backword check loop till x < 9
+        while(xcount < 9) {
+          let strElemLeftDiagonal = `(${xVal},${yVal})`;
+          let pos = strArr.findIndex(elem => elem == strElemLeftDiagonal);
+          if (pos!=-1 && pos!=index) {
+            let minIndex = Math.min.apply(null, [pos, index])
+            attackerQueen.push(minIndex);
+          }
+          xVal++;
+          yVal--;
+          xcount++;
+        }
+        xVal = xPosition;
+        ycount = yVal = yPosition;
+        //forword check loop till y < 9
+        while(ycount < 9) {
+          let strElemLeftDiagonal = `(${xVal},${xVal})`;
+          let pos = strArr.findIndex(elem => elem == strElemLeftDiagonal);
+          if (pos!=-1 && pos!=index) {
+            let minIndex = Math.min.apply(null, [pos, index])
+            attackerQueen.push(minIndex);
+          }
+          xVal--;
+          yVal++;
+          ycount++;
+        }
+      } else {
+        //backword loop till y > 0
+        while(ycount > 0) {
+          let strElemLeftDiagonal = `(${xVal},${yVal})`;
+          let pos = strArr.findIndex(elem => elem == strElemLeftDiagonal);
+          if (pos!=-1 && pos!=index) {
+            let minIndex = Math.min.apply(null, [pos, index])
+            attackerQueen.push(minIndex);
+          }
+          xVal++;
+          yVal--;
+          ycount--;
+        }
+        xVal = xPosition;
+        ycount = yVal = yPosition;
+        //forword check loop till y < 9
+        while(ycount < 9) {
+          let strElemLeftDiagonal = `(${xVal},${yVal})`;
+          let pos = strArr.findIndex(elem => elem == strElemLeftDiagonal);
+          if (pos!=-1 && pos!=index) {
+            let minIndex = Math.min.apply(null, [pos, index])
+            attackerQueen.push(minIndex);
+          }
+          xVal--;
+          yVal++;
+          ycount++;
+        }
+      }
+    });
+    if (attackerQueen.length > 0){
+      attackerQueen.sort(function(a, b) {
+        return a - b;
+      });
+      return strArr[attackerQueen[0]]  
+    }
+    return true; 
+  
+  }
+     
+  // keep this function call here 
+  console.log(EightQueens(["(2,1)", "(4,3)", "(6,3)", "(8,4)", "(3,4)", "(1,6)", "(7,7)", "(5,8)"]));
+  var queen = EightQueens(["(2,1)", "(4,3)", "(6,3)", "(8,4)", "(3,4)", "(1,6)", "(7,7)", "(5,8)"]);
+  document.getElementById("demo").innerHTML = queen;
+</script>
+</body>
+</html> 
